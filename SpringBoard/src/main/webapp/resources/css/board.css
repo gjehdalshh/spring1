@@ -1,0 +1,45 @@
+@charset "UTF-8";
+
+.cmd_mod_form {
+	display: none;
+}
+
+#favoriteContainer {
+	position: absolute;
+    right: 50px;
+    top: 70px;
+    color: #ff7675;
+    font-size: 30px;
+    cursor: pointer;
+}
+
+.td-ellipsis {
+	height: 40px;
+	max-width: 500px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	display: inline-block;
+}
+
+.page {
+	cursor: pointer;
+}
+
+.page.selected {
+	font-size: 1.2rem;
+	color: #e74c3c;
+	font-weight: bold;
+}
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.koreait.sboard.user.UserMapper">
+	<insert id="insUser">
+		INSERT INTO t_user
+		( user_id, user_pw, salt, nm, gender, ph, email )
+		VALUES
+		( #{user_id}, #{user_pw}, #{salt}, #{nm}, #{gender}, #{ph}, #{email} )
+	</insert>
+	
+	<select id="selUser" resultType="UserEntity">
+		SELECT
+			i_user, nm, email
+			<if test="i_user > 0">
+				, user_id, ph, gender, profile_img
+			</if>
+			<if test="user_id != null and user_id !=''">
+				, salt, user_pw
+			</if>
+		FROM t_user
+		<where>
+			<if test="i_user > 0">
+				i_user = ${i_user}
+			</if>
+			<if test="user_id != null and user_id !=''">
+				and user_id = #{user_id}
+			</if>
+		</where>
+	</select>
+	
+	
+	<update id="updUser">
+		UPDATE t_user
+		<set>
+			<if test="salt != null and salt != ''">salt = #{salt},</if>
+			<if test="user_pw != null and user_pw != ''">user_pw = #{user_pw},</if>
+			<if test="profile_img != null and profile_img != ''">profile_img = #{profile_img},</if>
+			m_dt = now()
+		</set>
+		<where>
+			<if test="i_user > 0">
+				i_user = #{i_user}
+			</if>
+			<if test="user_id != null and user_id !=''">
+				AND user_id = #{user_id}
+			</if>
+		</where>
+	</update>
+	
+	
+	<!--  /////////////////////// 프로필 이미지 ///// -->
+	
+	<insert id="insUserImg">
+		INSERT INTO t_user_img
+		(i_user, img)
+		VALUES
+		(#{i_user}, #{img})
+	</insert>
+	
+	<select id="selUserImgList" resultType="UserImgEntity">
+		SELECT *
+		FROM t_user_img
+		WHERE i_user = #{i_user}
+	</select>
+	
+	<delete id="delUserImg">
+		DELETE FROM t_user_img
+		WHERE i_img = #{i_img} AND i_user = #{i_user}
+	</delete>
+	
+	<!--  /////////////////////// 비밀번호 찾기 ///// -->
+	<insert id="insAuth">
+		INSERT INTO t_auth
+		(user_id, cd)
+		VALUES
+		(#{user_id}, #{cd})
+	</insert>
+	
+	<select id="selAuth" resultType="AuthEntity">
+		SELECT cd, TIMESTAMPDIFF(SECOND, r_dt, NOW()) as rest_sec
+		FROM t_auth
+		WHERE user_id = #{user_id}
+		<if test="cd != null and cd !=''">
+			AND cd = #{cd}
+		</if>
+	</select>
+	
+	<delete id="delAuth">
+		DELETE FROM t_auth
+		WHERE user_id = #{user_id}
+	</delete>	
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
